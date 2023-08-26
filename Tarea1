@@ -48,5 +48,4 @@ axs[1,2].set_title("Con N= 10000")
 
 plt.tight_layout()
 
-# Mostrar los gráficos
 plt.show()
