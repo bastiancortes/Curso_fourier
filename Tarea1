@@ -1,0 +1,52 @@
+import math as m
+import matplotlib.pyplot as plt
+import numpy as np
+NUM = 10000;R = 6
+space = np.linspace(-6.0, 6.0, num=NUM, dtype="complex_")
+
+plots = []
+def discret(N,R,x):
+    rango = np.arange(1, N+1)
+    punto =(R/N)* np.dot(u(rango*(R/N)),np.exp(-2*np.pi*1j *rango*x*(R/N))) # =\sum u(nR/N) e^{-2*pi*R*i*range *x/N}
+    return punto
+
+def transf_u(x):
+    return  4*np.pi**2*x**2*np.exp(-np.pi*x**2)
+
+def u(x):
+    return -2*np.pi*(2*np.pi*(x**2)-1)*np.exp(-np.pi*(x**2))
+
+for N in range(5,30,5):
+    Discret_TTF=np.zeros(NUM,dtype = "complex_")
+    for x in range(0,NUM):
+        Discret_TTF[x] = discret(N,R,space[x])
+    plots.append(Discret_TTF)
+
+
+
+fig, axs = plt.subplots(2, 3, figsize=(12, 8))
+
+titles = ["Aproximación N=5","Aproximación N=10","Aproximación N=15","Aproximación N=20","Aproximación N=25",]
+
+functions = [axs[0, 0], axs[0, 1], axs[0, 2], axs[1, 0], axs[1, 1]]
+
+for func, title, y in zip(functions, titles, plots):
+    func.plot(space, y)
+    func.plot(space,transf_u(space),linestyle='dashed', color = "red")
+    func.set_title(title)
+
+Discret_TTF=np.zeros(NUM,dtype = "complex_")
+for x in range(0,10000):
+    Discret_TTF[x] = discret(1000,R,space[x])
+
+axs[1, 2].plot(space, transf_u(space),linestyle='dashed',color = "red");axs[1, 2].plot(space, Discret_TTF)
+axs[1,2].set_title("Con N= 10000")
+
+
+
+
+
+plt.tight_layout()
+
+# Mostrar los gráficos
+plt.show()
